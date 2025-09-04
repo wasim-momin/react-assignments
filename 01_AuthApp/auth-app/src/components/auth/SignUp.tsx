@@ -1,4 +1,6 @@
-export default function Login() {
+import Link from "next/link";
+
+export default function SignUp() {
   return (
     <div
       className="min-h-screen flex items-center justify-center"
@@ -9,33 +11,36 @@ export default function Login() {
         style={{ backgroundColor: "#272757" }}
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-white">
-          Login
+          Sign Up
         </h2>
         <form className="space-y-4">
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Full Name"
+            className="w-full p-3 rounded-lg border-none focus:outline-none bg-[#e8f0fe] text-black"
+          />
+          <input
+            type="email"
+            placeholder="Email"
             className="w-full p-3 rounded-lg border-none focus:outline-none bg-[#e8f0fe] text-black"
           />
           <input
             type="password"
-            placeholder="password"
+            placeholder="Password"
             className="w-full p-3 rounded-lg border-none focus:outline-none bg-[#e8f0fe] text-black"
           />
-
-          <button className="w-full p-3 rounded-lg text-white font-semibold bg-[#8686AC] hover:bg-[#505081]">
-            {" "}
-            Login
+          <button className="cursor-pointer w-full p-3 rounded-lg text-white font-semibold bg-[#8686AC] hover:bg-[#505081]">
+            Sign Up
           </button>
         </form>
         <p className="text-gray-300 text-sm mt-4 text-center">
-          Don’t have an account?{" "}
-          <a
-            href="/signup"
+          Already have an account?{" "}
+          <Link
+            href="/auth/login"
             className="text-white underline hover:text-gray-300"
           >
-            Sign Up
-          </a>
+            Login
+          </Link>
         </p>
       </div>
     </div>
