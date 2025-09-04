@@ -21,13 +21,27 @@ const initialValues = {
 };
 
 export default function SignUp() {
+  const [status, setStatus] = useState<{
+    message: string;
+    success: boolean;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSignupSubmit = async (data: any) => {
     console.log("data", data);
     try {
       const res = await registerUser(data);
       console.log("res", res);
+      setStatus({
+        message: res.message,
+        success: res.success,
+      });
+      
     } catch (error: any) {
+      setStatus({
+        message:error.message || "Server Error",
+        success:false
+      })
       console.log(error);
     }
   };
@@ -60,6 +74,15 @@ export default function SignUp() {
               {/* {loading ? "Submitting..." : "Sign Up"} */}
               Sign Up
             </button>
+            {status && (
+              <p
+                className={`text-center mt-2 ${
+                  status.success ? "text-green-400" : "text-red-400"
+                }`}
+              >
+                {status.message}
+              </p>
+            )}
           </Form>
         </Formik>
 
