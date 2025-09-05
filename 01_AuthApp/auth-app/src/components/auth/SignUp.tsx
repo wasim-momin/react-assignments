@@ -6,6 +6,8 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import { registerUser } from "@/services/auth";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/slices/authSlice";
 
 const SignUpSchema = Yup.object().shape({
   username: Yup.string().required("Full name is required"),
@@ -31,6 +33,7 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false)
 
   const router = useRouter();
+  const dispatch = useDispatch()
 
   const handleSignupSubmit = async (data: any) => {
     console.log("data", data);
@@ -41,9 +44,15 @@ export default function SignUp() {
         message: res.message,
         success: res.success,
       });
-      if (status?.success) {
-        router.push("/dashboard");
+      if (res?.success) {
+        dispatch(login({
+          userData:res.data.user,
+          message:res.data.message,
+          token:res.data.token || null
+        }
+        ))
       }
+      router.push("/dashboard");
     } catch (error: any) {
       setStatus({
         message: error.message || "Server Error",
