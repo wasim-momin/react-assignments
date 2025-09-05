@@ -24,16 +24,15 @@ const initialValues = {
 };
 
 export default function SignUp() {
-
   const [status, setStatus] = useState<{
     message: string;
     success: boolean;
   } | null>(null);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleSignupSubmit = async (data: any) => {
     console.log("data", data);
@@ -45,13 +44,25 @@ export default function SignUp() {
         success: res.success,
       });
       if (res?.success) {
-        dispatch(login({
-          userData:res.data.user,
-          message:res.data.message,
-          token:res.data.token || null
-        }
-        ))
+        dispatch(
+          login({
+            userData: res.data.user,
+            message: res.message,
+            token: res.data.token || null,
+          })
+        );
       }
+      if (typeof window !== "undefined") {
+
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          userData: res.data.user,
+          message: res.message,
+          token: res.data.token || null,
+        })
+      );
+    }
       router.push("/dashboard");
     } catch (error: any) {
       setStatus({
