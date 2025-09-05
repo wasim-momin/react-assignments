@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { registerUser } from "@/services/auth";
+import { useRouter } from "next/navigation";
 
 const SignUpSchema = Yup.object().shape({
   username: Yup.string().required("Full name is required"),
@@ -21,11 +22,15 @@ const initialValues = {
 };
 
 export default function SignUp() {
+
   const [status, setStatus] = useState<{
     message: string;
     success: boolean;
   } | null>(null);
-  const [loading, setLoading] = useState(false);
+
+  const [loading, setLoading] = useState(false)
+
+  const router = useRouter();
 
   const handleSignupSubmit = async (data: any) => {
     console.log("data", data);
@@ -36,15 +41,18 @@ export default function SignUp() {
         message: res.message,
         success: res.success,
       });
-      
+      if (status?.success) {
+        router.push("/dashboard");
+      }
     } catch (error: any) {
       setStatus({
-        message:error.message || "Server Error",
-        success:false
-      })
+        message: error.message || "Server Error",
+        success: false,
+      });
       console.log(error);
     }
   };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center"
@@ -99,3 +107,27 @@ export default function SignUp() {
     </div>
   );
 }
+
+// {
+//     "statusCode": 200,
+//     "data": {
+//         "user": {
+//             "_id": "68b9af75ab5f0f9f1ac7896a",
+//             "avatar": {
+//                 "url": "https://via.placeholder.com/200x200.png",
+//                 "localPath": "",
+//                 "_id": "68b9af75ab5f0f9f1ac78969"
+//             },
+//             "username": "post",
+//             "email": "testpost@post.com",
+//             "role": "ADMIN",
+//             "loginType": "EMAIL_PASSWORD",
+//             "isEmailVerified": false,
+//             "createdAt": "2025-09-04T15:25:41.950Z",
+//             "updatedAt": "2025-09-04T15:25:42.025Z",
+//             "__v": 0
+//         }
+//     },
+//     "message": "Users registered successfully and verification email has been sent on your email.",
+//     "success": true
+// }
