@@ -46,7 +46,7 @@ export default function SignUp() {
       if (res?.success) {
         dispatch(
           login({
-            userData: res.data.user,
+            user: res.data.user,
             message: res.message,
             token: res.data.token || null,
           })
@@ -57,7 +57,7 @@ export default function SignUp() {
       localStorage.setItem(
         "auth",
         JSON.stringify({
-          userData: res.data.user,
+          user: res.data.user,
           message: res.message,
           token: res.data.token || null,
         })

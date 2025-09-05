@@ -16,7 +16,7 @@ export default function Providers({ children }: ProviderProps) {
         const authUser = JSON.parse(saveAuthData);
         store.dispatch(
           login({
-            userData: authUser.userData,
+            user: authUser.user,
             message: authUser.message,
             token: authUser.token || null,
           })

@@ -6,11 +6,7 @@ import { useSelector } from "react-redux";
 
 export default function Dashboard() {
 
-  const user = useSelector((state:RootState)=>state.auth.userData)
-
-console.log("current user data", user);
-
-
+  const user = useSelector((state:RootState)=>state.auth.user)
   return (
     <div className="flex flex-col min-h-screen bg-[#0F0E47] text-white">
       {/* Main content full height minus header/footer */}

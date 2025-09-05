@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Header() {
 
   const [open, setOpen] = useState(false);
-    const user = useSelector((state: RootState) => state.auth.userData);
+    const user = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch()
     const router = useRouter()
 
