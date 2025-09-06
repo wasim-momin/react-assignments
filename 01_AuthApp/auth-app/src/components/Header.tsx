@@ -23,6 +23,12 @@ export default function Header() {
     }
     router.push("/auth/login");
   };
+
+  function getInitials(name:any){
+    if(!name) return ""
+    return name.trim().split(" ").map((word:any)=>word.charAt(0).toUpperCase())
+  }
+
   return (
     <header className="fixed top-0 w-full bg-[#272757] text-white shadow-md">
       <nav className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -59,7 +65,7 @@ export default function Header() {
                 onClick={() => setOpen(!open)}
                 className="w-10 h-10 rounded-full bg-[#505081] flex items-center justify-center text-white font-bold"
               >
-                {user?.username[0].toUpperCase()}
+                {getInitials(user?.username || "")}
               </button>
 
               {/* Dropdown */}

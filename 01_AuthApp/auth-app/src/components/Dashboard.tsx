@@ -6,18 +6,48 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 export default function Dashboard() {
-  const {user, accessToken} = useSelector((state: RootState) => state.auth);
+  const { user, accessToken } = useSelector((state: RootState) => state.auth);
   console.log("dashboard data", user);
   console.log("dashboard accessToken", accessToken);
+
+  function toTitleCase(name: any) {
+    if (!name) return "";
+    return name
+      .toLowerCase()
+      .split(" ")
+      .map((word: any) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
+  //Explanination of above code
+  //   .toLowerCase() → pehle poore string ko chhote letters me convert karta hai.
+
+  // "WASIM MOMIN" → "wasim momin"
+
+  // .split(" ") → string ko space ke hisaab se todta hai array me.
+
+  // "wasim momin" → ["wasim", "momin"]
+
+  // .map(...) → har word ke upar loop chala ke:
+
+  // word.charAt(0).toUpperCase() → pehla letter capital karta hai.
+
+  // + word.slice(1) → baaki letters chhote hi rehte hain.
+
+  // "wasim" → "Wasim", "momin" → "Momin"
+
+  // .join(" ") → array ko wapas ek string bana deta hai space ke saath.
+
+  // ["Wasim", "Momin"] → "Wasim Momin"
 
   return (
     <div className="flex flex-col min-h-screen bg-[#0F0E47] text-white">
       {/* Main content full height minus header/footer */}
       <main className="flex-grow flex flex-col items-center justify-center p-8">
         <h1 className="text-3xl font-bold mb-10">
-          Welcome, User {user?.username} 👋
+          Welcome, {toTitleCase(user?.username || null)} 👋
         </h1>
-        {!user?.isEmailVerified &&(
+        {!user?.isEmailVerified && (
           <div className="bg-yellow-300 text-black p-4 rounded-lg mb-6 flex flex-col items-center">
             <p className="mb-2 font-semibold">
               Your email is not verified yet.

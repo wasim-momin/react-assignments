@@ -24,11 +24,7 @@ const initialValues = {
 };
 
 export default function SignUp() {
-  const [status, setStatus] = useState<{
-    message: string;
-    success: boolean;
-  } | null>(null);
-
+const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -39,10 +35,6 @@ export default function SignUp() {
     try {
       const res = await registerUser(data);
       console.log("res", res);
-      setStatus({
-        message: res.message,
-        success: res.success,
-      });
       if (res?.success) {
         dispatch(
           login({
@@ -66,11 +58,8 @@ export default function SignUp() {
       }
       router.push("/dashboard");
     } catch (error: any) {
-      setStatus({
-        message: error.message || "Server Error",
-        success: false,
-      });
       console.log(error);
+      setError(error.message);
     }
   };
 
@@ -86,6 +75,11 @@ export default function SignUp() {
         <h2 className="text-2xl font-bold mb-6 text-center text-white">
           Sign Up
         </h2>
+         {error && (
+          <div className="bg-red-300 text-black p-4 rounded-lg mb-6 flex flex-col items-center">
+            <p className="font-semibold">{error}</p>
+          </div>
+        )}
         <Formik
           initialValues={initialValues}
           onSubmit={handleSignupSubmit}
@@ -103,15 +97,6 @@ export default function SignUp() {
               {/* {loading ? "Submitting..." : "Sign Up"} */}
               Sign Up
             </button>
-            {status && (
-              <p
-                className={`text-center mt-2 ${
-                  status.success ? "text-green-400" : "text-red-400"
-                }`}
-              >
-                {status.message}
-              </p>
-            )}
           </Form>
         </Formik>
 

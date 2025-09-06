@@ -9,6 +9,7 @@ import { loginUser } from "@/services/auth";
 import { useDispatch } from "react-redux";
 import { login } from "@/store/slices/authSlice";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid Email").required("Email id is requried"),
@@ -21,6 +22,8 @@ const initialValues = {
 };
 
 export default function Login() {
+  const [error, setError] = useState(null);
+
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -50,7 +53,8 @@ export default function Login() {
       );
       router.push("/dashboard");
     } catch (error: any) {
-      console.log("login Error", error);
+      console.log("login Error page", error);
+      setError(error.message);
     }
   };
 
@@ -66,7 +70,11 @@ export default function Login() {
         <h2 className="text-2xl font-bold mb-6 text-center text-white">
           Login
         </h2>
-
+        {error && (
+          <div className="bg-red-300 text-black p-4 rounded-lg mb-6 flex flex-col items-center">
+            <p className="font-semibold">{error}</p>
+          </div>
+        )}
         <Formik
           initialValues={initialValues}
           validationSchema={LoginSchema}
