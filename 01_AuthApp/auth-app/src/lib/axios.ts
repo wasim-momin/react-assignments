@@ -1,8 +1,9 @@
 import axios from "axios";
 
 export const api =axios.create({
-    baseURL:"https://api.freeapi.app/api/v1",
+    baseURL:"/api",
     headers:{
         "content-Type":"application/json"
-    }
+    },
+    withCredentials: true, 
 })

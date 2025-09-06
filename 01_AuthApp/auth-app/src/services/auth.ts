@@ -34,6 +34,15 @@ export async function loginUser(data: UserLoginData) {
   }
 }
 
+export async function logoutUser() {
+  try{
+    const response = await api.post("/users/logout")
+    return response.data
+  }catch(error:any){
+    throw new Error(error.response.data.message||"Network error")
+  }
+}
+
 export async function verifyUser(token: string) {
   try {
     const response = await api.get(`/users/verify-email/${token}`, {

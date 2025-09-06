@@ -7,26 +7,37 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "./common/Button";
+import { logoutUser } from "@/services/auth";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user, refreshToken } = useSelector((state: RootState) => state.auth);
   const isLoggedIn = Boolean(user);
 
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    if (typeof window !== "undefined") {
+  console.log("refe tiken", refreshToken);
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+        console.log("log out success");
+    } catch (error: any) {
+      console.log("log out", error.message);
+    } finally {
+      dispatch(logout());
       localStorage.removeItem("auth");
+      router.push("/auth/login");
     }
-    router.push("/auth/login");
   };
 
-  function getInitials(name:any){
-    if(!name) return ""
-    return name.trim().split(" ").map((word:any)=>word.charAt(0).toUpperCase())
+  function getInitials(name: any) {
+    if (!name) return "";
+    return name
+      .trim()
+      .split(" ")
+      .map((word: any) => word.charAt(0).toUpperCase());
   }
 
   return (
