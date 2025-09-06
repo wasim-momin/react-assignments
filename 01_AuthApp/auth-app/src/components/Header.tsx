@@ -13,9 +13,6 @@ export default function Header() {
   const user = useSelector((state: RootState) => state.auth.user);
   const isLoggedIn = Boolean(user);
 
-  console.log("user statys", user);
-  console.log("user statys", isLoggedIn);
-
   const dispatch = useDispatch();
   const router = useRouter();
 

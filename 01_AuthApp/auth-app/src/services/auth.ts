@@ -23,14 +23,26 @@ export async function registerUser(data: UserRegisterData) {
   }
 }
 
-export async function loginUser(data:UserLoginData){
-  try{
+export async function loginUser(data: UserLoginData) {
+  try {
     const response = await api.post("/users/login", data);
     return response.data;
-  }catch(error:any){
-    if(error.response){
-      throw new Error(error.response.data.message)
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
     }
-    
+  }
+}
+
+export async function verifyUser(token: string) {
+  try {
+    const response = await api.get(`/users/verify-email/${token}`, {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
+    return response.data
+  } catch (error:any) {
+    throw new Error(error.response?.data?.message || "Netwrok issue")
   }
 }

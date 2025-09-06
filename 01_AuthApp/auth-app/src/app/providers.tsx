@@ -18,12 +18,12 @@ export default function Providers({ children }: ProviderProps) {
           login({
             user: authUser.user,
             message: authUser.message,
-            token: authUser.token || null,
+            accessToken: authUser.accessToken || null,
+            refreshToken: authUser.refreshToken || null,
           })
         );
         console.log("Hydrating store with:", authUser);
       }
-      console.log("Hydrating store with:outer", saveAuthData);
     }
   }, []);
 
