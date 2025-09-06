@@ -5,6 +5,10 @@ export interface UserRegisterData {
   email: string;
   password: string;
 }
+export interface UserLoginData {
+  email: string;
+  password: string;
+}
 
 export async function registerUser(data: UserRegisterData) {
   try {
@@ -16,5 +20,17 @@ export async function registerUser(data: UserRegisterData) {
     } else {
       throw new Error("Network error");
     }
+  }
+}
+
+export async function loginUser(data:UserLoginData){
+  try{
+    const response = await api.post("/users/login", data);
+    return response.data;
+  }catch(error:any){
+    if(error.response){
+      throw new Error(error.response.data.message)
+    }
+    
   }
 }

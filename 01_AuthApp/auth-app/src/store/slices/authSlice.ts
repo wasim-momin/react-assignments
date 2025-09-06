@@ -2,36 +2,39 @@ import { User } from "@/types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { stat } from "fs";
 
-interface AuthSate {
+interface AuthState {
   user: User | null;
   status: boolean;
   message: string | null;
-  token: string| null
+  accessToken: string| null
+  refreshToken: string| null
 }
 
-const initialState: AuthSate = {
+const initialState: AuthState = {
   user: null,
   status: false,
   message: null,
-  token: null
+  accessToken: null,
+  refreshToken:null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ user: User; message: string, token: string }>) => {
+    login: (state, action: PayloadAction<{ user: User; message: string, accessToken: string, refreshToken:string }>) => {
       state.status = true;
       state.message = action.payload.message;
       state.user = action.payload.user;
-      state.token = action.payload.token || null;
+      state.accessToken = action.payload.accessToken || null;
+      state.refreshToken = action.payload.refreshToken || null;
     },
     logout: (state) => {
       state.status = false;
       state.message = null;
       state.user = null;
-      state.token =  null;
-
+      state.accessToken =  null;
+      state.refreshToken = null;
     },
   },
 });

@@ -2,8 +2,58 @@
 
 import { Github, Mail } from "lucide-react";
 import Link from "next/link";
+import { InputField } from "../common";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import { loginUser } from "@/services/auth";
+import { useDispatch } from "react-redux";
+import { login } from "@/store/slices/authSlice";
+import { useRouter } from "next/navigation";
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid Email").required("Email id is requried"),
+  password: Yup.string().required("password is required"),
+});
+
+const initialValues = {
+  email: "",
+  password: "",
+};
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleLogin = async (data: any) => {
+    console.log("Login page data", data);
+    try {
+      const resp = await loginUser(data);
+      console.log("login page api respo", resp);
+
+      dispatch(
+        login({
+          user: resp.data.user,
+          message: resp.message,
+          accessToken: resp.data.accessToken,
+          refreshToken: resp.data.refreshToken,
+        })
+      );
+
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          user: resp.data.user,
+          message: resp.message,
+          accessToken: resp.data.accessToken,
+          refreshToken: resp.data.refreshToken,
+        })
+      );
+      router.push("/dashboard");
+    } catch (error: any) {
+      console.log("login Error", error);
+    }
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center"
@@ -17,22 +67,23 @@ export default function Login() {
           Login
         </h2>
 
-        {/* Username / Password Form */}
-        <form className="space-y-4">
-          <input
-            type="text"
-            placeholder="Username"
-            className="w-full p-3 rounded-lg border-none focus:outline-none bg-[#D9D9D9] text-black"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-3 rounded-lg border-none focus:outline-none bg-[#D9D9D9] text-black"
-          />
-          <button className="cursor-pointer w-full p-3 rounded-lg text-white font-semibold bg-[#8686AC] hover:bg-[#505081]">
-            Login
-          </button>
-        </form>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={LoginSchema}
+          onSubmit={handleLogin}
+        >
+          <Form className="space-y-4">
+            <InputField name="email" type="email" placeholder="Email" />
+            <InputField
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+            <button className="cursor-pointer w-full p-3 rounded-lg text-white font-semibold bg-[#8686AC] hover:bg-[#505081]">
+              Login
+            </button>
+          </Form>
+        </Formik>
 
         {/* Divider */}
         <div className="flex items-center my-6">
@@ -42,12 +93,12 @@ export default function Login() {
         </div>
 
         {/* Social Login */}
-            <div className="flex items-center justify-center gap-4 mt-6">
-      <button className="flex cursor-pointer items-center justify-center w-12 h-12 rounded-lg bg-[#DB4437] text-white hover:bg-[#c33d31] shadow-md">
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <button className="flex cursor-pointer items-center justify-center w-12 h-12 rounded-lg bg-[#DB4437] text-white hover:bg-[#c33d31] shadow-md">
             <Mail size={22} />
           </button>
-      <button className="flex cursor-pointer items-center justify-center w-12 h-12 rounded-lg bg-[#181717] text-white hover:bg-[#333333] shadow-md">
-            <Github size={22} /> 
+          <button className="flex cursor-pointer items-center justify-center w-12 h-12 rounded-lg bg-[#181717] text-white hover:bg-[#333333] shadow-md">
+            <Github size={22} />
           </button>
         </div>
 

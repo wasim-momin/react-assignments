@@ -48,21 +48,22 @@ export default function SignUp() {
           login({
             user: res.data.user,
             message: res.message,
-            token: res.data.token || null,
+            accessToken: res.data.accessToken || null,
+            refreshToken: res.data.refreshToken || null,
           })
         );
       }
       if (typeof window !== "undefined") {
-
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          user: res.data.user,
-          message: res.message,
-          token: res.data.token || null,
-        })
-      );
-    }
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            user: res.data.user,
+            message: res.message,
+            accessToken: res.data.accessToken || null,
+            refreshToken: res.data.refreshToken || null,
+          })
+        );
+      }
       router.push("/dashboard");
     } catch (error: any) {
       setStatus({
