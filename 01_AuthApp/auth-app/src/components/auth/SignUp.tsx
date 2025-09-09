@@ -56,7 +56,7 @@ const [error, setError] = useState(null);
           })
         );
       }
-      router.push("/dashboard");
+      router.push("/auth/login");
     } catch (error: any) {
       console.log(error);
       setError(error.message);
